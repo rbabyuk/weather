@@ -53,12 +53,14 @@ ps = BME280()
 ps_data = ps.get_data()
 print "Temperature:", convert(ps_data['t'], units[temperature_field]), "°"+units[temperature_field], "Pressure:", convert(ps_data['p'], units[pressure_field]), units[pressure_field], "Humidity:", ps_data['h'], units[humidity_field]
 
+"""
 #LCD
 lcd = Adafruit_CharLCD()
 lcd.clear()
 lcd.home()
 lcd.message('T=%s  P=%s\n' % (convert(ps_data['t'], units[temperature_field]), convert(ps_data['p'], units[pressure_field])))
 lcd.message('H=%s%%' % (ps_data['h']))
+"""
 
 # ESPEAK
 #speak_str = "Тем пе ратура "
@@ -76,11 +78,13 @@ SQL="INSERT INTO weather VALUES({0}, '{1}', {2}, {3})".format(time.time(), ps_da
 cur.execute(SQL)
 con.commit()
 
+"""
 #Delete data older than 30 days
 start_time =  time.time() - 86400 * delete_data_older_than_days
 SQL = "DELETE FROM weather WHERE (id < {0})".format(start_time)
 cur.execute(SQL)
 con.commit()
+"""
 
 #Read template & make index.htm
 f = open(home_dir+'templates/index.tpl', 'r')
@@ -119,6 +123,8 @@ f.close()
 #Database connection close
 con.close()
 
+"""
 #Send data to my site
 s="{0}:{1}:0:{2}:".format(int(ps_data['p']), int(ps_data['t']), int(ps_data['h']))
 response = urllib2.urlopen("http://avispro.com.ua/getdata.php?data="+s)
+"""
